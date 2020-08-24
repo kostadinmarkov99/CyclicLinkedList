@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29613.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CyclicLinkedList", "CyclicLinkedList.vcxproj", "{BA260EF8-31E2-4194-9E35-9B7F8379917F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BA260EF8-31E2-4194-9E35-9B7F8379917F}.Debug|x64.ActiveCfg = Debug|x64
+		{BA260EF8-31E2-4194-9E35-9B7F8379917F}.Debug|x64.Build.0 = Debug|x64
+		{BA260EF8-31E2-4194-9E35-9B7F8379917F}.Debug|x86.ActiveCfg = Debug|Win32
+		{BA260EF8-31E2-4194-9E35-9B7F8379917F}.Debug|x86.Build.0 = Debug|Win32
+		{BA260EF8-31E2-4194-9E35-9B7F8379917F}.Release|x64.ActiveCfg = Release|x64
+		{BA260EF8-31E2-4194-9E35-9B7F8379917F}.Release|x64.Build.0 = Release|x64
+		{BA260EF8-31E2-4194-9E35-9B7F8379917F}.Release|x86.ActiveCfg = Release|Win32
+		{BA260EF8-31E2-4194-9E35-9B7F8379917F}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {439BCDB6-46C5-462D-BFFB-70A087A2859B}
+	EndGlobalSection
+EndGlobal
