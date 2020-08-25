@@ -164,8 +164,6 @@ public:
                 temp = s->next;
                 s->next = temp->next;
                 free(temp);
-                std::cout << "Element " << value;
-                std::cout << " deleted from the list" << std::endl;
                 return;
             }
             s = s->next;
@@ -180,8 +178,6 @@ public:
             last = s;
             return;
         }
-
-        std::cout << "Element " << value << " not found in the list" << std::endl;
     }
 
     int search_possition(std::string& value) {
@@ -217,8 +213,6 @@ public:
             counter++;
             if (s->info == value)
             {
-                std::cout << "Element " << value;
-                std::cout << " found at position " << counter << std::endl;
                 return;
             }
             s = s->next;
@@ -226,12 +220,8 @@ public:
         if (s->info == value)
         {
             counter++;
-            std::cout << "Element " << value;
-            std::cout << " found at position " << counter << std::endl;
             return;
         }
-
-        std::cout << "Element " << value << " not found in the list" << std::endl;
     }
 
     void display_list() {
@@ -283,7 +273,7 @@ public:
     void sort() {
         node* s, * ptr;
 
-        circular_list* resultList = new circular_list();
+        circular_list resultList;
 
         std::string temp;
 
@@ -351,14 +341,15 @@ public:
         circular_list* circular_llistResult = new circular_list();
         
         if (last == NULL) {
-            std::cout << "There are no elements in this list!";
             return;
         }
 
         node* temp, * s;
         s = list.last->next;
 
-        int position = this->getElemetsCount();        
+        node* listNode = list.last->next;
+        int position = list.getElemetsCount();
+        //int position = this->getElemetsCount();        
 
         bool flag = false;
 
@@ -369,11 +360,9 @@ public:
             temp = s->next;
             std::string currentNode = "";
 
-            for (int j = search_possition(s->info); j < position; j++) {
+            for (int j = search_possition(listNode->info); j < position ; j++) {
                 std::string& pointer = s->info;
                 size_t sInfoLength = pointer.length();
-
-                //if (s->info == temp->info) beak;
 
                 char sInfoLastLetter = s->info[sInfoLength - 1];
                 char tempInfoFirstLetter = temp->info[0];
@@ -381,28 +370,15 @@ public:
                 sInfoLastLetter = asciitolower(sInfoLastLetter);
                 tempInfoFirstLetter = asciitolower(tempInfoFirstLetter);
 
-                /*if (currentNode == "") {
-                    
-                }*/
-                /*if (strcmp(currentNode, "") == 0)
-                    strcat_s(currentNode, s->info);*/
                 if (sInfoLastLetter == tempInfoFirstLetter)
                 {
                     int searchElement = search_possition(s->info);
                     if (searchElement != -1) currentPoss = searchElement;
-                    //std::string sd = list.search_element(searchElement);
                     std::string update = s->info + "-" + temp->info;
                     list.update(currentPoss + 1, update);
                     currentNode = temp->info;
                     list.delete_element(temp->info);
-                    
-                    //currentNode += s->info;
-                    //currentNode += "->";
-                    //currentNode += temp->info;
-                    /*strcat_s(currentNode, "->");
-                    strcat_s(currentNode, (char*)temp->info);*/
-                        
-                    //s = s->next;
+
                     temp = s->next;
                 }
                 else {
@@ -418,8 +394,42 @@ public:
 
             i = search_possition(temp->info);
             if (i <= 0) break;
-            //circular_llistResult->add_end(currentNode);
         }
+    }
+
+    void longest_node() {
+        node* s, * temp;
+
+        s = last->next;
+        int position = this->getElemetsCount();
+
+        int maxCounter = 0;
+        std::string maxCountNode = "";
+
+        for (int i = 0; i < position - 1; i++) {
+            std::string currentNode = s->info;
+            int currentNodeLength = currentNode.length();
+            
+            int currMaxCounter = 0;
+            //int currMaxPos = -1;
+
+            for (int j = 0; j < currentNodeLength; j++) {
+                char currentChar = currentNode[j];
+
+                if (currentChar == '-') currMaxCounter++;
+            }
+            
+            if (currMaxCounter > maxCounter) {
+                maxCounter = currMaxCounter;
+                maxCountNode = currentNode;
+            }
+
+            s = s->next;
+        }
+
+        if (maxCounter == 0) maxCountNode == last->next->info;
+
+        std::cout << "Longest: " + maxCountNode;
     }
 };
 
@@ -427,7 +437,14 @@ int main()
 {
     circular_list real_test;
 
-    std::string Street = "Street";
+    std::string value = "";
+    
+    for (int i = 0; i < 8; i++) {
+        std::cin >> value;
+        real_test.add_end(value);
+    }
+
+    /*std::string Street = "Street";
     std::string Taxi = "Taxi";
     std::string Ink = "Ink";
     std::string Dog = "Dog";
@@ -443,11 +460,15 @@ int main()
     real_test.add_end(Smile);
     real_test.add_end(Eat);
     real_test.add_end(Tall);
-    real_test.add_end(Pass);
+    real_test.add_end(Pass);*/
 
     real_test.node_iteration(real_test);
 
-    //result->sort();
+    real_test.sort();
+
+    real_test.display_list();
+
+    real_test.longest_node();
 
     std::string as = "Hello World";
     
