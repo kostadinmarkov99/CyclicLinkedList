@@ -1,17 +1,31 @@
 #include <iostream>
 
+char asciitolower(char in) {
+    if (in <= 'Z' && in >= 'A')
+        return in - ('Z' - 'z');
+    return in;
+}
+
+void ToLowerCase(std::string& sen)
+{
+    for (size_t i = 0; i < sen.size(); i++)
+    {
+        sen[i] = asciitolower(sen[i]);
+    }
+}
+
 struct node
 {
-    const char* info;
+    std::string info;
     node* next;
 };
 
-class circular_llist
+class circular_list
 {
 private:
     node* last;
 public:
-    circular_llist()
+    circular_list()
     {
         last = NULL;
     }
@@ -20,7 +34,7 @@ public:
         return this->last;
     }
 
-    void create_node(const char* value){
+    void create_node(std::string& value){
         node* temp;
         temp = new node;
         temp->info = value;
@@ -37,7 +51,7 @@ public:
         }
     }
 
-    void add_begin(const char* value) {
+    void add_begin(std::string& value) {
         if (last == NULL)
         {
             create_node(value);
@@ -51,7 +65,7 @@ public:
         last->next = temp;
     }
 
-   void add_end(const char* value) {
+   void add_end(std::string& value) {
         if (last == NULL) {
             create_node(value);
             return;
@@ -85,10 +99,9 @@ public:
         {
             last = temp;
         }
-         
     }
 
-    void add_after(const char* value, int position) {
+    void add_after(std::string& value, int position) {
         if (last == NULL)
         {
             std::cout << "The list is empty!" << std::endl;
@@ -123,7 +136,7 @@ public:
         }
     }
 
-    void delete_element(const char* value) {
+    void delete_element(std::string& value) {
         node* temp, * s;
         s = last->next;
 
@@ -171,7 +184,30 @@ public:
         std::cout << "Element " << value << " not found in the list" << std::endl;
     }
 
-    void search_element(const char* value) {
+    int search_possition(std::string& value) {
+        node* s;
+        int counter = -1;
+        s = last->next;
+
+        while (s != last)
+        {
+            counter++;
+            if (s->info == value)
+            {
+                return counter;
+            }
+            s = s->next;
+        }
+        if (s->info == value)
+        {
+            counter++;
+            
+            return counter;
+        }
+        return counter;
+    }
+
+    void search_element(std::string& value) {
         node* s;
         int counter = 0;
         s = last->next;
@@ -219,20 +255,16 @@ public:
         std::cout << s->info << std::endl;
     }
 
-    void update() {
-        char* value;
-        int pos, i;
+    void update(int posOne, std::string valueOne) {
+        std::string value = valueOne;
+        int pos = posOne;
+        int i;
 
         if (last == NULL)
         {
             std::cout << "List is empty, nothing to update" << std::endl;
             return;
         }
-
-        std::cout << "Enter the node position to be updated: ";
-        std::cin >> pos;
-        std::cout << "Enter the new value: ";
-        std::cin >> value;
 
         node* s;
         s = last->next;
@@ -241,20 +273,19 @@ public:
         {
             if (s == last)
             {
-                std::cout << "There are less than " << pos << " elements.";
-                std::cout << std::endl;
                 return;
             }
             s = s->next;
         }
         s->info = value; 
-        std::cout << "Node Updated" << std::endl;
     }
 
     void sort() {
         node* s, * ptr;
 
-        const char* temp;
+        circular_list* resultList = new circular_list();
+
+        std::string temp;
 
         if (last == NULL)
         {
@@ -271,7 +302,7 @@ public:
             {
                 if (ptr != last->next)
                 {
-                    if (s->info > ptr->info)
+                    if (s->info[0] > ptr->info[0])
                     {
                         temp = s->info;
                         s->info = ptr->info;
@@ -289,6 +320,8 @@ public:
             s = s->next;
 
         }
+
+        
     }
 
     int getElemetsCount() {
@@ -313,30 +346,110 @@ public:
         return count + 1;
     }
    
-    void node_iteration() {
+    void node_iteration(circular_list& list) {
 
+        circular_list* circular_llistResult = new circular_list();
+        
+        if (last == NULL) {
+            std::cout << "There are no elements in this list!";
+            return;
+        }
+
+        node* temp, * s;
+        s = list.last->next;
+
+        int position = this->getElemetsCount();        
+
+        bool flag = false;
+
+        int currentPoss = -1;
+
+        for (int i = 0; i < position - 1; i++)
+        {
+            temp = s->next;
+            std::string currentNode = "";
+
+            for (int j = search_possition(s->info); j < position; j++) {
+                std::string& pointer = s->info;
+                size_t sInfoLength = pointer.length();
+
+                //if (s->info == temp->info) beak;
+
+                char sInfoLastLetter = s->info[sInfoLength - 1];
+                char tempInfoFirstLetter = temp->info[0];
+                    
+                sInfoLastLetter = asciitolower(sInfoLastLetter);
+                tempInfoFirstLetter = asciitolower(tempInfoFirstLetter);
+
+                /*if (currentNode == "") {
+                    
+                }*/
+                /*if (strcmp(currentNode, "") == 0)
+                    strcat_s(currentNode, s->info);*/
+                if (sInfoLastLetter == tempInfoFirstLetter)
+                {
+                    int searchElement = search_possition(s->info);
+                    if (searchElement != -1) currentPoss = searchElement;
+                    //std::string sd = list.search_element(searchElement);
+                    std::string update = s->info + "-" + temp->info;
+                    list.update(currentPoss + 1, update);
+                    currentNode = temp->info;
+                    list.delete_element(temp->info);
+                    
+                    //currentNode += s->info;
+                    //currentNode += "->";
+                    //currentNode += temp->info;
+                    /*strcat_s(currentNode, "->");
+                    strcat_s(currentNode, (char*)temp->info);*/
+                        
+                    //s = s->next;
+                    temp = s->next;
+                }
+                else {
+                    temp = temp->next;
+                    flag = true;
+                }
+                if (!flag)
+                    temp = s->next;
+            }
+
+            
+            s = s->next;
+
+            i = search_possition(temp->info);
+            if (i <= 0) break;
+            //circular_llistResult->add_end(currentNode);
+        }
     }
 };
 
 int main()
 {
-    circular_llist cl;
-    circular_llist cd;
+    circular_list real_test;
 
-    cl.add_end("Hello");
-    cl.add_end("World");
-    cl.add_end("How");
-    cl.add_end("Are");
-    cl.add_end("You");
-    cl.add_end("?");
-    cl.display_list();
+    std::string Street = "Street";
+    std::string Taxi = "Taxi";
+    std::string Ink = "Ink";
+    std::string Dog = "Dog";
+    std::string Smile = "Smile";
+    std::string Eat = "Eat";
+    std::string Tall = "Tall";
+    std::string Pass = "Pass";
 
-    cd.add_begin("!");
-    cd.add_begin("You");
-    cd.add_begin("Thank");
-    cd.add_begin("Fine");
-    cd.add_begin("I Am");
-    cd.display_list();
+    real_test.add_end(Street);
+    real_test.add_end(Taxi);
+    real_test.add_end(Ink);
+    real_test.add_end(Dog);
+    real_test.add_end(Smile);
+    real_test.add_end(Eat);
+    real_test.add_end(Tall);
+    real_test.add_end(Pass);
+
+    real_test.node_iteration(real_test);
+
+    //result->sort();
+
+    std::string as = "Hello World";
     
     return 0;
 }
